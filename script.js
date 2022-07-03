@@ -1,36 +1,21 @@
+// Get buttons
+const buttons = document.querySelectorAll(`button`);
+
+let computerSelection;
+let playerSelection;
 
 // Initialize vars to store scores
 let computerPoints = 0;
 let playerPoints = 0;
 
-
-// Get random choice from computer
-const computerSelection = computerPlay();
-// Get player's choice
-const playerSelection = playerPlay();
-
-// Get buttons
-const buttons = document.querySelectorAll(`button`);
-// Call playerSelection on them
-buttons.forEach(button => button.addEventListener('click', playerPlay));
+const roundResult = playRound;
+buttons.forEach(button => button.addEventListener('click', roundResult));
 
 
-// while (![`paper`, `rock`, `scissors`].includes(playerSelection)) {
-
-//     playerSelection = prompt(`Write rock, paper or scissors!`).toLowerCase().trim();
-// }
-console.log(playRound(computerSelection, playerSelection));
 // Calculate winner
 resultMessage = `And the result is...`
-if (computerPoints === playerPoints) {
-    resultMessage += ' draw! Congrats for both of you!'
-} else if (computerPoints > playerPoints) {
-    resultMessage += ` you lost! Sorry! What about a next round?`
-} else {
-    resultMessage += `you won! Congratulations!`
-}
-console.log(resultMessage)
 
+console.log(getResultMessage(computerSelection, playerSelection))
 
 
 // Functions
@@ -47,15 +32,15 @@ function computerPlay() {
     }
 }
 
-function playerPlay(){
-    return console.log(this.id)
-}
 
 // Play one round of R-P-S and save points
-function playRound(computerSelection, playerSelection) {
+// get input function calls inside the function
+function playRound(e) {
+    const computerSelection = computerPlay();
+    const playerSelection = e.target.id;
     // Don't add any points if they chose the same
     if (computerSelection === playerSelection) {
-        return `Draw! You both chose ${computerSelection}!`
+        return console.log(`Draw! You both chose ${computerSelection}!`)
     } else {
         // List every case where the computer win, add points to computer
         if ((computerSelection === `rock` && playerSelection === `scissors`)
@@ -63,23 +48,34 @@ function playRound(computerSelection, playerSelection) {
             || (computerSelection === `scissors` && playerSelection === `paper`)) {
             computerPoints++;
             if (computerSelection === `scissors`) {
-                return `You Lose! ${toCapital(computerSelection)} beat ${playerSelection}!`
+                return console.log(`You Lose! ${toCapital(computerSelection)} beat ${playerSelection}!`)
             }
-            return `You Lose! ${toCapital(computerSelection)} beats ${playerSelection}!`
+            return console.log(`You Lose! ${toCapital(computerSelection)} beats ${playerSelection}!`)
         } else {
             // Cases when Player win
             playerPoints++;
             if (playerSelection === `scissors`) {
-                return `You Win! ${toCapital(playerSelection)} beat ${computerSelection}!`
+                return console.log(`You Win! ${toCapital(playerSelection)} beat ${computerSelection}!`)
             }
-            return `You Win! ${toCapital(playerSelection)} beats ${computerSelection}!`
+            return console.log(`You Win! ${toCapital(playerSelection)} beats ${computerSelection}!`)
         }
     }
 
 }
 // Capitalize first letter
 function toCapital(string) {
+    if (typeof string !== "string") return;
     return string[0].toUpperCase() + string.slice(1)
 }
-// Possibility of a function to calculate return message
-
+// Function to calculate return  final result message
+function getResultMessage(computerPoints, playerPoints){
+    if (computerPoints === playerPoints) {
+        resultMessage += ' draw! Congrats for both of you!'
+    } else if (computerPoints > playerPoints) {
+        resultMessage += ` you lost! Sorry! What about a next round?`
+    } else {
+        resultMessage += `you won! Congratulations!`
+    }
+    return resultMessage;
+}
+// Possibilty of function generating round-end result messages
