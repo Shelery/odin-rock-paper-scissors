@@ -1,3 +1,4 @@
+const body = document.querySelector('body')
 // Get buttons
 const buttons = document.querySelectorAll(`button`);
 
@@ -12,8 +13,7 @@ rounds = 0;
 const playRound = function(e) {
     rounds++;
     if (rounds > 5){
-        buttons.forEach(button => button.removeEventListener('click', playRound))
-        return;
+        endGame()
     }
     console.log(rounds, computerPoints, playerPoints);
     const computerSelection = computerPlay();
@@ -45,13 +45,6 @@ const playRound = function(e) {
 }
 // WATCH OUT FOR INFINITE LOOP
 buttons.forEach(button => button.addEventListener('click', playRound));
-
-    // Calculate winner
-    resultMessage = `And the result is...`
-    // NOTE : computerSelection and playerSelection are not returned (yet)
-    // BUT it should be updated yet it is not and round limit is not working either ^.^"
-    console.log(getResultMessage(computerPoints, playerPoints))
-
 
 
 // Functions
@@ -87,5 +80,17 @@ function getResultMessage(computerPoints, playerPoints){
         resultMessage += `you won! Congratulations!`
     }
     return resultMessage;
+}
+function endGame(){
+    // Remove eventListener
+    buttons.forEach(button => button.removeEventListener('click', playRound))
+    // Create div for result
+    let finalResult = document.createElement('h1');
+    // Calculate winner
+    resultMessage = `And the result is...`
+    finalResult.textContent = getResultMessage(computerPoints, playerPoints);
+
+    body.appendChild(finalResult)
+    return;
 }
 // Possibilty of function generating round-end result messages
