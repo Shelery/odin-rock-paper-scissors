@@ -1,57 +1,34 @@
+// Get HTML elements
 const body = document.querySelector('body')
-// Get buttons
 const buttons = document.querySelectorAll(`button`);
-
 const message = document.querySelector('#message')
+
 let computerSelection;
 let playerSelection;
 
 // Initialize vars to store scores
-computerPoints = 0;
-playerPoints = 0;
-rounds = 0;
+let computerPoints = 0;
+let playerPoints = 0;
+let  rounds = 0;
+
 const playRound = function(e) {
+    // Update round number
     rounds++;
-    if (rounds > 5){
+    // Check if game should be ended
+    if (rounds === 5){
+        // Calculate winner and final resultMessage
         endGame()
     }
-    console.log(rounds, computerPoints, playerPoints);
     const computerSelection = computerPlay();
     const playerSelection = e.target.id;
-    // Don't add any points if they chose the same
-    if (computerSelection === playerSelection) {
-        return message.textContent =`Draw! You both chose ${computerSelection}!`
-    } else {
-        // List every case where the computer win, add points to computer
-        if ((computerSelection === `rock` && playerSelection === `scissors`)
-            || (computerSelection === `paper` && playerSelection === `rock`)
-            || (computerSelection === `scissors` && playerSelection === `paper`)) {
-            computerPoints++;
-            if (computerSelection === `scissors`) {
-                // NOTE for some reason innerText was not fine, but works with textContent
-                return message.textContent =`You Lose! ${toCapital(computerSelection)} beat ${playerSelection}!`
-            }
-            return message.textContent =`You Lose! ${toCapital(computerSelection)} beats ${playerSelection}!`
-        } else {
-            // Cases when Player win
-            playerPoints++;
-            if (playerSelection === `scissors`) {
-                return message.textContent =`You Win! ${toCapital(playerSelection)} beat ${computerSelection}!`
-            }
-            return message.textContent =`You Win! ${toCapital(playerSelection)} beats ${computerSelection}!`
-        };
-    };
+    addPoints(computerSelection, playerSelection);
     
 }
-// WATCH OUT FOR INFINITE LOOP
+// Add playRound to buttons
 buttons.forEach(button => button.addEventListener('click', playRound));
 
 
 // Functions
-// Play one round of R-P-S and save points
-// get input function calls inside the function
-
-
 // Get random choice from computer
 function computerPlay() {
     n = Math.floor(Math.random() * 3);
@@ -92,5 +69,30 @@ function endGame(){
 
     body.appendChild(finalResult)
     return;
+}
+function addPoints(computerSelection, playerSelection){
+    // Don't add any points if they chose the same
+    if (computerSelection === playerSelection) {
+        return message.textContent =`Draw! You both chose ${computerSelection}!`
+    } else {
+        // List every case where the computer win, add points to computer
+        if ((computerSelection === `rock` && playerSelection === `scissors`)
+            || (computerSelection === `paper` && playerSelection === `rock`)
+            || (computerSelection === `scissors` && playerSelection === `paper`)) {
+            computerPoints++;
+            if (computerSelection === `scissors`) {
+                // NOTE for some reason innerText was not fine, but works with textContent
+                return message.textContent =`You Lose! ${toCapital(computerSelection)} beat ${playerSelection}!`
+            }
+            return message.textContent =`You Lose! ${toCapital(computerSelection)} beats ${playerSelection}!`
+        } else {
+            // Cases when Player win
+            playerPoints++;
+            if (playerSelection === `scissors`) {
+                return message.textContent =`You Win! ${toCapital(playerSelection)} beat ${computerSelection}!`
+            }
+            return message.textContent =`You Win! ${toCapital(playerSelection)} beats ${computerSelection}!`
+        };
+    };
 }
 // Possibilty of function generating round-end result messages
