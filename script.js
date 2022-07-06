@@ -6,27 +6,16 @@ let computerSelection;
 let playerSelection;
 
 // Initialize vars to store scores
-var computerPoints = 0;
-var playerPoints = 0;
-
-const roundResult = playRound;
-for (let i = 0; i < 5; i++){
-    buttons.forEach(button => button.addEventListener('click', roundResult));
-}
-
-
-
-// Calculate winner
-resultMessage = `And the result is...`
-// NOTE : computerSelection and playerSelection are not returned (yet)
-// BUT it should be updated yet it is not and round limit is not working either ^.^"
-console.log(getResultMessage(computerPoints, playerPoints))
-
-
-// Functions
-// Play one round of R-P-S and save points
-// get input function calls inside the function
-function playRound(e) {
+computerPoints = 0;
+playerPoints = 0;
+rounds = 0;
+const playRound = function(e) {
+    rounds++;
+    if (rounds > 5){
+        buttons.forEach(button => button.removeEventListener('click', playRound))
+        return;
+    }
+    console.log(rounds, computerPoints, playerPoints);
     const computerSelection = computerPlay();
     const playerSelection = e.target.id;
     // Don't add any points if they chose the same
@@ -39,6 +28,7 @@ function playRound(e) {
             || (computerSelection === `scissors` && playerSelection === `paper`)) {
             computerPoints++;
             if (computerSelection === `scissors`) {
+                // NOTE for some reason innerText was not fine, but works with textContent
                 return message.textContent =`You Lose! ${toCapital(computerSelection)} beat ${playerSelection}!`
             }
             return message.textContent =`You Lose! ${toCapital(computerSelection)} beats ${playerSelection}!`
@@ -49,10 +39,25 @@ function playRound(e) {
                 return message.textContent =`You Win! ${toCapital(playerSelection)} beat ${computerSelection}!`
             }
             return message.textContent =`You Win! ${toCapital(playerSelection)} beats ${computerSelection}!`
-        }
-    }
-
+        };
+    };
+    
 }
+// WATCH OUT FOR INFINITE LOOP
+buttons.forEach(button => button.addEventListener('click', playRound));
+
+    // Calculate winner
+    resultMessage = `And the result is...`
+    // NOTE : computerSelection and playerSelection are not returned (yet)
+    // BUT it should be updated yet it is not and round limit is not working either ^.^"
+    console.log(getResultMessage(computerPoints, playerPoints))
+
+
+
+// Functions
+// Play one round of R-P-S and save points
+// get input function calls inside the function
+
 
 // Get random choice from computer
 function computerPlay() {
