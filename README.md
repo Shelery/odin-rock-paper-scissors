@@ -16,7 +16,13 @@ What I practiced in this challenge::
     The problem was, that - I suspect due to scoping -, when playRound returned,
     it didn't globally update the points. It also didn't work with limiting rounds.
     
-    My solution was including endGame function into playRound, which uses the
-    local(?[not sure about whether it is the proper terminology in this case)
-    values of computerPoints and playerPoints, thus makes it easy to keep track 
-    of them and also stop the game when rounds reach 5.
+  My solution was including endGame function into playRound, which uses the
+  local (?[not sure about whether it is the proper terminology in this case)
+  values of computerPoints and playerPoints, thus makes it easy to keep track 
+  of them and also stop the game when rounds reach 5.
+
+### Possible research topics
+-     let / var / "nothing"  when declaring a variable
+  - possible consequences
+  - when to use them
+- function vs. function call
